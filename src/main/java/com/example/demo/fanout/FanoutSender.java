@@ -19,6 +19,5 @@ public class FanoutSender {
 
     public void webSocketSend(String msg) {
         this.rabbitTemplate.convertAndSend("fanoutExchange2", "", msg);
-        System.out.println("[-webSocketSend-] fanout send msg");
     }
 }

@@ -15,12 +15,12 @@ public class DirectReceive2 {
 		System.out.println("Receive2接受的消息： "+msg);
 		Thread.sleep(500);
 		//同websocket推送到页面
-		for(WebSocketServer webSocketServer :WebSocketServer.webSockets){  
-            try {  
-                webSocketServer.send(msg);  
-            } catch (Exception e) {  
-                e.printStackTrace();  
-            }  
-        }  
+//		for(WebSocketServer webSocketServer :WebSocketServer.webSockets){
+//            try {
+//                webSocketServer.send(msg);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
 	}
 }

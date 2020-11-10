@@ -13,9 +13,9 @@ import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 @Configuration
 public class AppConfig {
 	
-	private static String routingKey = "rabbit.msg";
-	private static String routingKey2 = "rabbit.msg.others";
-	private static String routingKey3 = "rabbit.user.others";
+	private static final String ROUTING_KEY = "rabbit.msg";
+	private static final String ROUTING_KEY2 = "rabbit.msg.others";
+	private static final String ROUTING_KEY3 = "rabbit.user.others";
 
 	@Bean
 	public Queue helloQueue() {
@@ -34,12 +34,12 @@ public class AppConfig {
 	
 	@Bean
 	public Queue msgQueue2() {
-		return new Queue(AppConfig.routingKey2, false);
+		return new Queue(AppConfig.ROUTING_KEY2, false);
 	}
 	
 	@Bean
 	public Queue userQueue2() {
-		return new Queue(AppConfig.routingKey3, false);
+		return new Queue(AppConfig.ROUTING_KEY3, false);
 	}
 	
 	@Bean 
@@ -72,7 +72,7 @@ public class AppConfig {
 	
 	@Bean
 	public Binding binding() {
-		return BindingBuilder.bind(directQueue()).to(directExchange2()).with(routingKey);
+		return BindingBuilder.bind(directQueue()).to(directExchange2()).with(ROUTING_KEY);
 	}
 	
 	@Bean

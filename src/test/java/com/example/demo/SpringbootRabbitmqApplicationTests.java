@@ -10,23 +10,23 @@ import com.example.demo.direct.DirectSender;
 import com.example.demo.handler.Sender;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = SpringbootRabbitmqApplication.class)
 public class SpringbootRabbitmqApplicationTests {
-	
-	@Autowired
-	private Sender sender;
-	
-	@Autowired
-	private DirectSender dsender;
 
-	@Test
-	public void send() {
-		sender.send();
-	}
-	
-	@Test
-	public void sendDirect() {
-		dsender.sendDirect();
-	}
+    @Autowired
+    private Sender sender;
+
+    @Autowired
+    private DirectSender dsender;
+
+    @Test
+    public void send() {
+        sender.send();
+    }
+
+    @Test
+    public void sendDirect() {
+        dsender.sendDirect();
+    }
 
 }
