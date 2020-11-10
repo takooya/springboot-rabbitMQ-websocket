@@ -18,8 +18,10 @@
 	}
 	
 	websocket.onopen=function(e){
+        alert('websocket建立连接');
 		console.log('websocket建立连接');
 		websocket.send('websocket建立连接');
+        alert('调用onopen成功');
 	}
 	websocket.onclose=function(e){
 		console.log('websocket关闭连接');
