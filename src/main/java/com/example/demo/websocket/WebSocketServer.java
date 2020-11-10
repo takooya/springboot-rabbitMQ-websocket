@@ -2,6 +2,7 @@ package com.example.demo.websocket;
 
 import com.example.demo.fanout.FanoutSender;
 import com.example.demo.util.SpringUtil;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -29,6 +31,7 @@ public class WebSocketServer {
         }
     }
 
+    @Getter
     private Session session;
     public static CopyOnWriteArraySet<WebSocketServer> webSockets = new CopyOnWriteArraySet<WebSocketServer>();
 
@@ -36,27 +39,19 @@ public class WebSocketServer {
     public void onOpen(Session session) {
         this.session = session;
         webSockets.add(this);
-        this.send("新用户加入");
+        fanoutSender.webSocketSend("新用户加入");
     }
 
     @OnClose
     public void onClose(Session s) {
         webSockets.remove(this);
-        this.send("有用户离开");
+        fanoutSender.webSocketSend("有用户离开");
     }
 
     @OnMessage
     public void onMessage(String msg) {
-        System.out.println("从客服端接受的消息： " + msg);
-    }
-
-    public void send(String msg) {
+        log.info("[-WebSocketServer-].onMessage:msg={}", msg);
         fanoutSender.webSocketSend(msg);
-//        try {
-//            this.session.getBasicRemote().sendText(msg);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
 
     @SuppressWarnings("AliControlFlowStatementWithoutBraces")
