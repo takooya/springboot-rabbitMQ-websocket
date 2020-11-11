@@ -7,8 +7,8 @@ import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
+import javax.websocket.RemoteEndpoint;
 import java.io.IOException;
-import java.util.function.Consumer;
 
 @Component
 @RabbitListener(queues = AppConfig.FANOUT_QUEUE_1)
@@ -20,7 +20,10 @@ public class FanoutReciver1 {
         log.info("[-FanoutReciver1-].read:info={}", info);
         WebSocketServer.webSockets.forEach(webSocketServer -> {
             try {
-                webSocketServer.getSession().getBasicRemote().sendText("FanoutReciver1:" + info);
+                RemoteEndpoint.Basic wsSession = webSocketServer.getSession().getBasicRemote();
+                synchronized (wsSession) {
+                    wsSession.sendText("FanoutReciver1:" + info);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

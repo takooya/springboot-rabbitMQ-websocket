@@ -3,7 +3,6 @@ package com.example.demo.websocket;
 import com.example.demo.fanout.FanoutSender;
 import com.example.demo.util.SpringUtil;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,7 +32,7 @@ public class WebSocketServer {
 
     @Getter
     private Session session;
-    public static CopyOnWriteArraySet<WebSocketServer> webSockets = new CopyOnWriteArraySet<WebSocketServer>();
+    public static CopyOnWriteArraySet<WebSocketServer> webSockets = new CopyOnWriteArraySet<>();
 
     @OnOpen
     public void onOpen(Session session) {
@@ -44,6 +43,11 @@ public class WebSocketServer {
 
     @OnClose
     public void onClose(Session s) {
+        try {
+            s.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         webSockets.remove(this);
         fanoutSender.webSocketSend("有用户离开");
     }
